@@ -1,0 +1,236 @@
+@import 'tailwindcss' source('./components');
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+html { font-family: var(--font-sans); background: #f5f8fc; color: #070b14; }
+html.dark { background: #05080f; color: #f1f5f9; color-scheme: dark; }
+body { margin: 0; }
+* { box-sizing: border-box; }
+.studio-mobile { padding: 0 12px 24px; max-width: 1440px; margin: 0 auto; }
+#lyric-groove-sketchpad { padding-top: 12px; }
+#lyric-groove-sketchpad [data-pane] { display: none; }
+#lyric-groove-sketchpad[data-tab='drafts'] [data-pane~='drafts'],
+#lyric-groove-sketchpad[data-tab='lyrics'] [data-pane~='lyrics'],
+#lyric-groove-sketchpad[data-tab='groove'] [data-pane~='groove'],
+#lyric-groove-sketchpad[data-tab='melody'] [data-pane~='melody'],
+#lyric-groove-sketchpad[data-tab='piano'] [data-pane~='piano'] { display: block; }
+#lyric-groove-sketchpad [data-workbench] { display: block; }
+#lyric-groove-sketchpad [data-workbench] > div { position: static; }
+#lyric-groove-sketchpad [data-studio-transport] { position: relative; z-index: 10; }
+#lyric-groove-sketchpad [data-song-controls] { display: flex; flex-direction: column; }
+#lyric-groove-sketchpad [data-pane='groove'].pt-2\.5 { padding-top: 16px; }
+#lyric-groove-sketchpad button, #lyric-groove-sketchpad select { min-height: 44px; touch-action: manipulation; }
+#lyric-groove-sketchpad input:not([type='range']), #lyric-groove-sketchpad textarea, #lyric-groove-sketchpad select { font-size: 16px; }
+#lyric-groove-sketchpad textarea { min-height: 260px; line-height: 1.8; }
+
+#lyric-groove-sketchpad canvas { max-width: 100%; }
+#lyric-groove-sketchpad [data-pane='piano'] button[data-testid^='piano-key-'] { touch-action: pan-x pinch-zoom; }
+/* Keep overflow inside the control that owns it, across phones and tablets. */
+html, body, #root { width: 100%; min-width: 0; min-height: 100%; }
+body { overflow-x: hidden; }
+.studio-mobile { width: 100%; max-width: 1440px; }
+#lyric-groove-sketchpad { min-width: 0; }
+#lyric-groove-sketchpad :where(input, select, textarea) { max-width: 100%; min-width: 0; }
+#lyric-groove-sketchpad :where(button, select, summary) { min-height: 44px; }
+#lyric-groove-sketchpad [data-song-library] { display: flex; flex-wrap: wrap; }
+#lyric-groove-sketchpad #draft-selector { flex: 1 1 200px; max-width: 100%; }
+#lyric-groove-sketchpad #song-title-input { flex: 1 1 100%; min-width: 0; order: 4; }
+#lyric-groove-sketchpad:not([data-tab='drafts']) [data-song-library] > :is(input, button) { display: none; }
+#lyric-groove-sketchpad [data-song-transport] { justify-content: flex-start; gap: 6px; min-width: 0; }
+#lyric-groove-sketchpad [data-song-transport] > button { flex-grow: 1; justify-content: center; }
+#lyric-groove-sketchpad .section-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
+#lyric-groove-sketchpad .section-summary::-webkit-details-marker { display: none; }
+#lyric-groove-sketchpad .section-summary-action { color: #0284c7; font-size: 12px; white-space: nowrap; }
+#lyric-groove-sketchpad .section-summary-action::after { content: ' ＋'; }
+#lyric-groove-sketchpad details[open] > .section-summary .section-summary-action::after { content: ' −'; }
+#lyric-groove-sketchpad [data-section-list] { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 4px; overscroll-behavior-x: contain; }
+#lyric-groove-sketchpad [data-section-tools] > div:first-of-type { min-width: 0; }
+#lyric-groove-sketchpad [data-section-tools] > div:first-of-type > div:first-child { max-width: 100%; }
+#lyric-groove-sketchpad [data-piano-scroll] { overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+#lyric-groove-sketchpad [data-piano-keybed] { min-width: 810px; }
+#lyric-groove-sketchpad [data-pane='piano'] > div { overflow: visible; }
+#lyric-groove-sketchpad [data-pane='piano'] > div > div:last-child { min-width: 0; }
+#lyric-groove-sketchpad [data-testid='piano-roll-canvas'] { height: clamp(340px, 62dvh, 540px); }
+#lyric-groove-sketchpad [data-testid='song-timeline-canvas'] { height: 336px; }
+[data-testid='songwriting-guide-modal'] > div { max-height: calc(100dvh - 20px); }
+[data-testid='songwriting-guide-modal'] > div > div:last-child { min-height: 0; }
+#lyric-groove-sketchpad :focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+@media (min-width: 760px) {
+  .studio-mobile { padding-inline: 20px; }
+  #lyric-groove-sketchpad [data-song-controls] { flex-direction: row; align-items: center; }
+  #lyric-groove-sketchpad [data-song-library] { flex: 1 1 240px; }
+  #lyric-groove-sketchpad [data-song-transport] { flex: 0 1 auto; }
+  #lyric-groove-sketchpad [data-song-transport] > button { flex-grow: 0; }
+  #lyric-groove-sketchpad[data-tab='lyrics'] [data-workbench] > [data-pane='lyrics'] { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; }
+  #lyric-groove-sketchpad[data-tab='lyrics'] [data-workbench] > [data-pane='lyrics'] > div { margin-top: 0; min-width: 0; }
+}
+@media (min-width: 600px) and (max-height: 540px) {
+  .studio-mobile { padding: 0 10px 12px; }
+  #lyric-groove-sketchpad { padding-block: 6px 12px; }
+  #lyric-groove-sketchpad > * + * { margin-top: 8px; }
+  #lyric-groove-sketchpad [data-studio-transport] { padding: 8px; }
+  #lyric-groove-sketchpad [data-song-controls] { flex-direction: row; align-items: center; gap: 8px; }
+  #lyric-groove-sketchpad:not([data-tab='drafts']) [data-song-library] { flex: 0 1 180px; }
+  #lyric-groove-sketchpad [data-song-transport] { flex: 1 1 auto; justify-content: flex-end; }
+  #lyric-groove-sketchpad [data-song-transport] > span { display: none; }
+  #lyric-groove-sketchpad [data-song-transport] > button { flex-grow: 0; padding-inline: 9px; }
+  #lyric-groove-sketchpad [data-section-tools] { padding: 4px 10px; }
+  #lyric-groove-sketchpad [data-pane='piano'] > div { padding: 10px; }
+  #lyric-groove-sketchpad [data-piano-controls] { gap: 6px; }
+  #lyric-groove-sketchpad [data-piano-controls] > div { width: auto; gap: 6px; }
+  #lyric-groove-sketchpad [data-piano-keybed] > div:last-child { height: clamp(128px, 42dvh, 200px); }
+  #lyric-groove-sketchpad [data-testid='piano-roll-canvas'] { height: max(300px, 85dvh); }
+  #lyric-groove-sketchpad textarea { min-height: 200px; }
+}
+@media (max-width: 359px) {
+  .studio-mobile { padding-inline: 8px; }
+  #lyric-groove-sketchpad [data-workbench] > div { padding-inline: 8px; }
+  #lyric-groove-sketchpad [data-song-transport] { gap: 4px; }
+  #lyric-groove-sketchpad [data-song-transport] > button { padding-inline: 8px; }
+}
+
+@media (max-width: 639px) {
+  #lyric-groove-sketchpad [data-studio-menu] { position: fixed; inset: 12px 12px auto; width: auto; max-width: none; max-height: calc(100dvh - 24px); overflow-y: auto; }
+}
+.rotate-hint { font-size: 12px; color: #64748b; padding: 8px 2px 0; }
+@media (orientation: landscape), (min-width: 768px) { .rotate-hint { display: none; } }
+
+@media (max-width: 599px) {
+  #lyric-groove-sketchpad [data-pane='melody'] > .flex { flex-wrap: wrap; }
+  #lyric-groove-sketchpad [data-pane='melody'] > .flex > .flex { flex-wrap: wrap; max-width: 100%; }
+  #lyric-groove-sketchpad [data-piano-controls] > div { flex-wrap: wrap; }
+  #lyric-groove-sketchpad [data-testid='bar-chord-track'] > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+#lyric-groove-sketchpad:not([data-tab='lyrics']):not([data-tab='melody']) [data-workbench] { display: none; }
+#lyric-groove-sketchpad [data-section-tools] > .section-summary { margin-block: 0; }
+#lyric-groove-sketchpad [data-section-tools][open] > .section-summary { margin-bottom: 8px; }
+@media (min-width: 600px) and (max-height: 540px) {
+  #lyric-groove-sketchpad[data-tab='piano'] { display: flex; flex-direction: column; gap: 8px; }
+  #lyric-groove-sketchpad[data-tab='piano'] > * { margin-block: 0; }
+  #lyric-groove-sketchpad[data-tab='piano'] [data-pane='piano'] { order: 1; }
+  #lyric-groove-sketchpad[data-tab='piano'] [data-section-tools] { order: 2; }
+  #lyric-groove-sketchpad [data-piano-controls] { flex-wrap: nowrap; }
+  #lyric-groove-sketchpad [data-piano-controls] > div:first-child { flex: 0 1 160px; }
+  #lyric-groove-sketchpad [data-piano-controls] > div:first-child > span:first-child { display: none; }
+  #lyric-groove-sketchpad [data-piano-controls] > div:last-child { flex: 1 1 auto; justify-content: flex-end; }
+  #lyric-groove-sketchpad [data-testid='grand-piano-keyboard'] > div:last-child { display: none; }
+  #lyric-groove-sketchpad [data-piano-keybed] > div:last-child { height: 132px; }
+}
+
+/* One task at a time: changing tools never unmounts the song/editor state. */
+#lyric-groove-sketchpad .workspace-switcher { position: sticky; top: 0; z-index: 25; display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #e9f0f8; margin-bottom: 8px; }
+.dark #lyric-groove-sketchpad .workspace-switcher { background: #101d30; }
+#lyric-groove-sketchpad .workspace-switcher button { flex: 1; min-width: 0; padding: 8px 4px; border-radius: 9px; font-size: 12px; font-weight: 600; color: #475569; white-space: nowrap; }
+.dark #lyric-groove-sketchpad .workspace-switcher button { color: #94a3b8; }
+#lyric-groove-sketchpad .workspace-switcher button[aria-pressed='true'] { color: #0369a1; background: #fff; box-shadow: 0 1px 3px #0a192f18; }
+.dark #lyric-groove-sketchpad .workspace-switcher button[aria-pressed='true'] { color: #7dd3fc; background: #1b2b46; }
+#lyric-groove-sketchpad [data-song-controls] { display: flex; flex-direction: row; align-items: center; flex-wrap: nowrap; gap: 6px; }
+#lyric-groove-sketchpad [data-song-library] { flex: 1 1 0; min-width: 0; }
+#lyric-groove-sketchpad #draft-selector { min-width: 0; width: 100%; flex-basis: 100%; text-overflow: ellipsis; }
+#lyric-groove-sketchpad [data-studio-transport] { padding: 8px; }
+#lyric-groove-sketchpad .quick-play { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 8px 10px; flex: 0 0 auto; border-radius: 9px; background: #0284c7; color: #fff; font-size: 12px; font-weight: 600; }
+#lyric-groove-sketchpad .quick-play.is-playing { background: #e11d48; }
+#lyric-groove-sketchpad [data-transport-options] { flex: 0 0 auto; }
+#lyric-groove-sketchpad [data-transport-options] > summary { display: flex; align-items: center; padding: 7px; font-size: 11px; font-weight: 600; list-style: none; cursor: pointer; border-radius: 9px; background: #e9f0f8; color: #334155; }
+.dark #lyric-groove-sketchpad [data-transport-options] > summary { background: #182740; color: #e2e8f0; }
+#lyric-groove-sketchpad [data-transport-options] > summary::-webkit-details-marker { display: none; }
+#lyric-groove-sketchpad [data-transport-options] [data-song-transport] { position: absolute; top: calc(100% + 6px); inset-inline: 0; z-index: 30; padding: 12px; border: 1px solid #dce6f2; border-radius: 12px; background: #fff; box-shadow: 0 12px 30px #0a192f25; max-height: 55dvh; overflow-y: auto; justify-content: flex-start; }
+.dark #lyric-groove-sketchpad [data-transport-options] [data-song-transport] { background: #0b1220; border-color: #182740; }
+#lyric-groove-sketchpad[data-tab='drafts'] [data-song-controls] { flex-wrap: wrap; }
+#lyric-groove-sketchpad[data-tab='drafts'] [data-song-library] { flex-basis: 100%; }
+#lyric-groove-sketchpad [data-section-tools] { display: none; }
+#lyric-groove-sketchpad[data-workspace='structure'] [data-section-tools] { display: block; }
+#lyric-groove-sketchpad[data-workspace='structure'] [data-workbench],
+#lyric-groove-sketchpad[data-workspace='structure'] [data-pane='piano'] { display: none; }
+#lyric-groove-sketchpad[data-tab='lyrics'] [data-workbench] > [data-pane='lyrics'] { display: block; }
+#lyric-groove-sketchpad [data-lyric-editor], #lyric-groove-sketchpad [data-lyric-analysis] { display: none; }
+#lyric-groove-sketchpad[data-workspace='write'] [data-lyric-editor],
+#lyric-groove-sketchpad[data-workspace='harmony'] [data-lyric-analysis],
+#lyric-groove-sketchpad[data-workspace='rhyme'] [data-lyric-analysis] { display: block; margin: 0; padding: 12px; }
+#lyric-groove-sketchpad [data-lyric-analysis] > div:first-child > div:first-child { display: none; }
+#lyric-groove-sketchpad [data-chord-insert] { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+#lyric-groove-sketchpad [data-chord-insert] > span { display: none; }
+#lyric-groove-sketchpad #smart-lyric-textarea { min-height: 180px; height: clamp(180px, 42dvh, 500px); resize: vertical; }
+#lyric-groove-sketchpad [data-sound-controls],
+#lyric-groove-sketchpad [data-testid='live-song-stage'],
+#lyric-groove-sketchpad [data-testid='groove-library-panel'] { display: none; }
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='sound'] [data-sound-controls] { display: block; }
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='stage'] [data-testid='live-song-stage'],
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='arpeggios'] [data-testid='groove-library-panel'],
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='rhythms'] [data-testid='groove-library-panel'] { display: block; }
+#lyric-groove-sketchpad [data-library-kind] { display: none; }
+#lyric-groove-sketchpad[data-workspace='arpeggios'] [data-library-kind='arpeggios'],
+#lyric-groove-sketchpad[data-workspace='rhythms'] [data-library-kind='rhythms'] { display: block; }
+#lyric-groove-sketchpad [data-melody-tools], #lyric-groove-sketchpad [data-roll-editor] { display: none; }
+#lyric-groove-sketchpad[data-workspace='tools'] [data-melody-tools],
+#lyric-groove-sketchpad[data-workspace='roll'] [data-roll-editor] { display: block; margin: 0; }
+#lyric-groove-sketchpad [data-testid='piano-roll-canvas'] { height: clamp(280px, 56dvh, 560px); }
+#lyric-groove-sketchpad[data-tab='piano'] [data-piano-controls] > div:last-child,
+#lyric-groove-sketchpad[data-tab='piano'] [data-testid='grand-piano-keyboard'] > div:last-child { display: none; }
+#lyric-groove-sketchpad[data-tab='piano'][data-workspace='tools'] [data-piano-controls] > div:last-child { display: flex; }
+#lyric-groove-sketchpad[data-tab='piano'][data-workspace='tools'] [data-testid='grand-piano-keyboard'] > div:last-child { display: block; }
+#lyric-groove-sketchpad[data-tab='piano'][data-workspace='tools'] [data-piano-scroll] { display: none; }
+#lyric-groove-sketchpad [data-piano-controls] > div:first-child > span:first-child { display: none; }
+#lyric-groove-sketchpad [data-pane='piano'] > div { padding: 10px; }
+#lyric-groove-sketchpad > :not(:last-child) { margin-block: 0 8px; }
+@media (min-width: 600px) and (max-height: 540px) {
+  #lyric-groove-sketchpad[data-tab='piano'] { display: block; }
+  #lyric-groove-sketchpad .workspace-switcher button { min-height: 40px; padding-block: 6px; }
+  #lyric-groove-sketchpad [data-testid='piano-roll-canvas'] { height: max(230px, 65dvh); }
+  #lyric-groove-sketchpad #smart-lyric-textarea { min-height: 150px; height: 52dvh; }
+}
+
+/* Pane visibility must outrank the common bottom-tab pane selectors. */
+#lyric-groove-sketchpad[data-tab] [data-section-tools] { display: none; }
+#lyric-groove-sketchpad[data-tab][data-workspace='structure'] [data-section-tools] { display: block; }
+#lyric-groove-sketchpad[data-tab='groove'] [data-sound-controls],
+#lyric-groove-sketchpad[data-tab='groove'] [data-testid='live-song-stage'],
+#lyric-groove-sketchpad[data-tab='groove'] [data-testid='groove-library-panel'] { display: none; }
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='sound'] [data-sound-controls],
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='stage'] [data-testid='live-song-stage'],
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='arpeggios'] [data-testid='groove-library-panel'],
+#lyric-groove-sketchpad[data-tab='groove'][data-workspace='rhythms'] [data-testid='groove-library-panel'] { display: block; }
+#lyric-groove-sketchpad [data-active-section] { display: flex; gap: 8px; min-width: 0; }
+#lyric-groove-sketchpad [data-active-section] select { flex: 1; min-width: 0; padding: 6px 10px; border-radius: 9px; border: 1px solid #dce6f2; background: #fff; color: #0a192f; }
+.dark #lyric-groove-sketchpad [data-active-section] select { border-color: #182740; background: #0b1220; color: #e2e8f0; }
+#lyric-groove-sketchpad [data-editor-settings] > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: #64748b; list-style: none; cursor: pointer; }
+#lyric-groove-sketchpad [data-editor-settings] > summary > span { font-size: 11px; color: #0284c7; white-space: nowrap; }
+#lyric-groove-sketchpad [data-editor-settings] > summary::-webkit-details-marker { display: none; }
+#lyric-groove-sketchpad [data-editor-settings][open] > div { padding-top: 8px; }
+#lyric-groove-sketchpad [data-testid='chord-suggestions-grid'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#lyric-groove-sketchpad [data-testid='chord-suggestions-grid'] > div { min-width: 0; padding: 10px; }
+@media (min-width: 900px) {
+  #lyric-groove-sketchpad [data-testid='chord-suggestions-grid'] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+#lyric-groove-sketchpad [data-key-recording] { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 10px; margin-bottom: 8px; border-radius: 9px; background: #fff1f2; color: #be123c; font-size: 12px; }
+#lyric-groove-sketchpad [data-key-recording] button { font-weight: 700; padding-inline: 10px; }
+@media (max-width: 599px) {
+  #lyric-groove-sketchpad [data-melody-tools] > .flex { flex-wrap: wrap; }
+  #lyric-groove-sketchpad [data-melody-tools] > .flex > .flex { flex-wrap: wrap; max-width: 100%; }
+}
+@media (min-width: 760px) and (max-height: 540px) {
+  #lyric-groove-sketchpad[data-tab='lyrics'][data-workspace='write'],
+  #lyric-groove-sketchpad[data-tab='melody'][data-workspace='roll'] { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 8px; align-items: start; }
+  #lyric-groove-sketchpad[data-workspace='write'] > *,
+  #lyric-groove-sketchpad[data-workspace='roll'] > * { margin-block: 0; min-width: 0; }
+  #lyric-groove-sketchpad[data-workspace='write'] .workspace-switcher,
+  #lyric-groove-sketchpad[data-workspace='roll'] .workspace-switcher { grid-column: 1 / -1; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-studio-transport],
+  #lyric-groove-sketchpad[data-workspace='roll'] [data-studio-transport],
+  #lyric-groove-sketchpad[data-workspace='write'] [data-active-section],
+  #lyric-groove-sketchpad[data-workspace='roll'] [data-active-section] { grid-column: 1; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-workbench],
+  #lyric-groove-sketchpad[data-workspace='roll'] [data-workbench] { grid-column: 2; grid-row: 2 / span 2; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-song-controls],
+  #lyric-groove-sketchpad[data-workspace='roll'] [data-song-controls] { flex-wrap: wrap; justify-content: space-between; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-song-library],
+  #lyric-groove-sketchpad[data-workspace='roll'] [data-song-library] { flex-basis: 100%; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-lyric-editor] { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-lyric-editor] > * { margin-block: 0; min-width: 0; }
+  #lyric-groove-sketchpad[data-workspace='write'] #smart-lyric-textarea { grid-column: 1 / -1; }
+  #lyric-groove-sketchpad[data-workspace='write'] [data-editor-settings] > summary { font-size: 11px; flex-wrap: wrap; gap: 0; }
+}

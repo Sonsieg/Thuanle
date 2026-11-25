@@ -1,0 +1,29 @@
+# Dependencies and generated local files
+node_modules/
+.expo/
+.git/
+dist/
+web-build/
+/ios/
+/android/
+.vscode/
+.DS_Store
+**/.DS_Store
+*.log
+*.tsbuildinfo
+
+# Local credentials and build outputs
+.env*.local
+*.jks
+*.keystore
+*.p12
+*.p8
+*.mobileprovision
+credentials.json
+*.apk
+*.aab
+
+# Documentation and test sources are not needed in the build archive
+/docs/
+**/*.test.ts
+AGENTS.md
